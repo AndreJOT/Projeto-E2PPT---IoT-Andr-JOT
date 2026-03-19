@@ -23,7 +23,7 @@ Sistema IoT com ESP32 e Node-RED para controle de potência (0–100%) via poten
 # Sistema Operacional e Softwares Utilizados
 ###### Servidor Linux 24.04 hospedado no Oracle Cloud.
 ###### ArduinoIDE para codificar o ESP32 (bibliotecas instaladas: PubSubClient, Adafruit GFX Library, Adafruit SSD1306).
-###### No arquivo manual_oracle_mosquitto contém instrução de instalação / configuração / scripts: 
+###### No arquivo ##manual_oracle_mosquitto## contém instrução de instalação / configuração / scripts: 
 -	Banco de Dados MySQL;
 -	Servidor Mosquitto (MQTT);
 -	NodeRED;
