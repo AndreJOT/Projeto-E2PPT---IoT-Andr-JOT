@@ -1,4 +1,4 @@
-# Projeto-E2PPT-IoT-Andre-JOT
+![IoT finalizado](https://github.com/user-attachments/assets/afbacf7b-2ff3-40d4-889c-bd0e1fb80989)<img width="1280" height="524" alt="image" src="https://github.com/user-attachments/assets/c785baa5-f974-4309-8b60-7f00b13664a1" /># Projeto-E2PPT-IoT-Andre-JOT
 Sistema IoT com ESP32 e Node-RED para controle de potência (0–100%) via potenciômetro, com monitoramento em VM Linux (Oracle Cloud) usando MQTT.
 
 
@@ -19,7 +19,7 @@ Sistema IoT com ESP32 e Node-RED para controle de potência (0–100%) via poten
 •	1 LED e Resistor;
 
 
-<img width="916" height="497" alt="image" src="https://github.com/user-attachments/assets/0bbce868-ff55-4c5a-8a29-72b89eb01028" />
+![IoT finalizado](https://github.com/user-attachments/assets/59b7bf56-dbcd-40b2-a44b-237a06591d73)
 <img width="459" height="456" alt="image" src="https://github.com/user-attachments/assets/d8784ddb-9109-4775-b33e-c4229a3f421b" />
 
 # Sistema Operacional e Softwares Utilizados
