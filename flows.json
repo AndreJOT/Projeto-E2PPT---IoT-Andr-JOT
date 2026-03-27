@@ -1,0 +1,584 @@
+[
+    {
+        "id": "9da32d95-1d50-4a",
+        "type": "tab",
+        "label": "Temp"
+    },
+    {
+        "id": "966f39e65a20fcc7",
+        "type": "mqtt in",
+        "z": "9da32d95-1d50-4a",
+        "name": "IOT CT3061965",
+        "topic": "CT3061965_VAL",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "835d5e0c0f368ec6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 260,
+        "y": 100,
+        "wires": [
+            [
+                "22d0b883c6e6ca6b"
+            ]
+        ]
+    },
+    {
+        "id": "22d0b883c6e6ca6b",
+        "type": "string",
+        "z": "9da32d95-1d50-4a",
+        "name": "",
+        "methods": [
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "{"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "}"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": ":"
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": ""
+                    },
+                    {
+                        "type": "str",
+                        "value": ""
+                    }
+                ]
+            }
+        ],
+        "prop": "payload",
+        "propout": "payload",
+        "object": "msg",
+        "objectout": "msg",
+        "x": 410,
+        "y": 100,
+        "wires": [
+            [
+                "d1748ab41681bb36",
+                "8d59866b1945eeda"
+            ]
+        ]
+    },
+    {
+        "id": "d1748ab41681bb36",
+        "type": "csv",
+        "z": "9da32d95-1d50-4a",
+        "name": "separate",
+        "spec": "rfc",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\r\\n",
+        "temp": "VALOR",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 540,
+        "y": 100,
+        "wires": [
+            [
+                "d24924aa91f060ec"
+            ]
+        ]
+    },
+    {
+        "id": "d24924aa91f060ec",
+        "type": "function",
+        "z": "9da32d95-1d50-4a",
+        "name": "function 1",
+        "func": "VALOR = msg.payload.VALOR\n \nmsg.payload = {}\nmsg.payload.VALOR = VALOR\n\nmsg.payload = VALOR;\n\nreturn msg",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 3,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 100,
+        "wires": [
+            [
+                "ce9b07ea03750b5b"
+            ]
+        ]
+    },
+    {
+        "id": "ce9b07ea03750b5b",
+        "type": "ui_gauge",
+        "z": "9da32d95-1d50-4a",
+        "name": "",
+        "group": "fa4097e39ff94127",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "% MOTOR",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 830,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "8d59866b1945eeda",
+        "type": "function",
+        "z": "9da32d95-1d50-4a",
+        "name": "function 2",
+        "func": "let topico = msg.topic;  // salva o tópico original\n\nmsg.topic = \"INSERT INTO leituras (valor, topico) VALUES (?, ?)\";\n\nmsg.payload = [\n    parseFloat(msg.payload),\n    topico\n];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 160,
+        "wires": [
+            [
+                "27fcad17a0fb64eb"
+            ]
+        ]
+    },
+    {
+        "id": "27fcad17a0fb64eb",
+        "type": "mysql",
+        "z": "9da32d95-1d50-4a",
+        "mydb": "e38c4b9f6c8750c3",
+        "name": "",
+        "x": 830,
+        "y": 160,
+        "wires": [
+            [
+                "4af28ee7cb165203"
+            ]
+        ]
+    },
+    {
+        "id": "4af28ee7cb165203",
+        "type": "debug",
+        "z": "9da32d95-1d50-4a",
+        "name": "debug 0",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1280,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "2b4a68df896bc887",
+        "type": "inject",
+        "z": "9da32d95-1d50-4a",
+        "name": "Busca dados",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 520,
+        "y": 220,
+        "wires": [
+            [
+                "6310b3a67b60479a"
+            ]
+        ]
+    },
+    {
+        "id": "d6616e65b11edb32",
+        "type": "mysql",
+        "z": "9da32d95-1d50-4a",
+        "mydb": "e38c4b9f6c8750c3",
+        "name": "",
+        "x": 830,
+        "y": 220,
+        "wires": [
+            [
+                "611666165e6ecacf"
+            ]
+        ],
+        "info": "### ## # "
+    },
+    {
+        "id": "a30d11e631b89018",
+        "type": "debug",
+        "z": "9da32d95-1d50-4a",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1280,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "fe8e3ea9c5fa28bf",
+        "type": "ui_chart",
+        "z": "9da32d95-1d50-4a",
+        "name": "",
+        "group": "d3562b4d63aa4f41",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "% / TEMPO",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1130,
+        "y": 220,
+        "wires": [
+            [
+                "a30d11e631b89018"
+            ]
+        ]
+    },
+    {
+        "id": "611666165e6ecacf",
+        "type": "function",
+        "z": "9da32d95-1d50-4a",
+        "name": "function 4",
+        "func": "msg.payload = msg.payload[0].valor;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 220,
+        "wires": [
+            [
+                "fe8e3ea9c5fa28bf"
+            ]
+        ]
+    },
+    {
+        "id": "6310b3a67b60479a",
+        "type": "function",
+        "z": "9da32d95-1d50-4a",
+        "name": "function 3",
+        "func": "msg.topic = \"SELECT valor FROM leituras ORDER BY id DESC LIMIT 5;\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 220,
+        "wires": [
+            [
+                "d6616e65b11edb32"
+            ]
+        ]
+    },
+    {
+        "id": "ba339badd7c92e0a",
+        "type": "string",
+        "z": "9da32d95-1d50-4a",
+        "name": "BOTÃO",
+        "methods": [
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "false"
+                    },
+                    {
+                        "type": "str",
+                        "value": "0"
+                    }
+                ]
+            },
+            {
+                "name": "replaceAll",
+                "params": [
+                    {
+                        "type": "str",
+                        "value": "true"
+                    },
+                    {
+                        "type": "str",
+                        "value": "1"
+                    }
+                ]
+            }
+        ],
+        "prop": "payload",
+        "propout": "payload",
+        "object": "msg",
+        "objectout": "msg",
+        "x": 680,
+        "y": 280,
+        "wires": [
+            [
+                "7ff73f439d6f76c1"
+            ]
+        ]
+    },
+    {
+        "id": "7ff73f439d6f76c1",
+        "type": "mqtt out",
+        "z": "9da32d95-1d50-4a",
+        "name": "",
+        "topic": "CT3061965_BOTAO",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "835d5e0c0f368ec6",
+        "x": 860,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "4468b16346ea4001",
+        "type": "ui_switch",
+        "z": "9da32d95-1d50-4a",
+        "name": "",
+        "label": "OFF / ON",
+        "tooltip": "",
+        "group": "40b3a2065ad98f32",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 540,
+        "y": 280,
+        "wires": [
+            [
+                "ba339badd7c92e0a"
+            ]
+        ]
+    },
+    {
+        "id": "46f6bd121ddc3f1d",
+        "type": "debug",
+        "z": "9da32d95-1d50-4a",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1120,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "6920b3dc4cc6cb82",
+        "type": "ui_spacer",
+        "z": "9da32d95-1d50-4a",
+        "name": "spacer",
+        "group": "fa4097e39ff94127",
+        "order": 1,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "835d5e0c0f368ec6",
+        "type": "mqtt-broker",
+        "name": "IOT CT3061965",
+        "broker": "129.153.95.201",
+        "port": 1883,
+        "clientid": "CT3061965_BOTAO",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "fa4097e39ff94127",
+        "type": "ui_group",
+        "name": "GRÁFICO MOTOR",
+        "tab": "e89947bf7814402d",
+        "order": 2,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e38c4b9f6c8750c3",
+        "type": "MySQLdatabase",
+        "name": "Banco MQTT",
+        "host": "localhost",
+        "port": "3306",
+        "db": "POS_IOT",
+        "tz": "",
+        "charset": "UTF8",
+        "info": "SELECT valor FROM leituras ORDER BY id DESC LIMIT 1;"
+    },
+    {
+        "id": "d3562b4d63aa4f41",
+        "type": "ui_group",
+        "name": "GRÁFICO / TEMPO",
+        "tab": "e89947bf7814402d",
+        "order": 3,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "40b3a2065ad98f32",
+        "type": "ui_group",
+        "name": "COMANDO",
+        "tab": "e89947bf7814402d",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e89947bf7814402d",
+        "type": "ui_tab",
+        "name": "INTERFACE",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "2ecd799a31b56963",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-string": "1.0.0",
+            "node-red-dashboard": "3.6.6",
+            "node-red-node-mysql": "3.0.0"
+        }
+    }
+]
